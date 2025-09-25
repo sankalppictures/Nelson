@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nelson Mandela: Long Walk to Freedom Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #1a202c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-width: 900px;
+            width: 100%;
+            padding: 2rem;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #1e40af;
+            animation: bounceIn 1s ease-out;
+        }
+
+        .header p {
+            font-size: 1.125rem;
+            color: #4a5568;
+            margin-top: 0.5rem;
+        }
+
+        .question-card {
+            background-color: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            animation: slideInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .option-button {
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            background-color: #ffffff;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #2d3748;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .option-button:hover {
+            border-color: #4299e1;
+            transform: translateY(-2px);
+        }
+
+        .option-button.correct {
+            background-color: #d1fae5;
+            border-color: #38a169;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(56, 161, 105, 0.5);
+        }
+
+        .option-button.incorrect {
+            background-color: #fee2e2;
+            border-color: #e53e3e;
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translateX(-1px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-4px); }
+            40%, 60% { transform: translateX(4px); }
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        .nav-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #4299e1;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .nav-button:hover {
+            background-color: #3182ce;
+            transform: translateY(-2px);
+        }
+
+        .nav-button:disabled {
+            background-color: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .score-card {
+            text-align: center;
+            animation: slideInUp 0.8s ease-out forwards;
+        }
+
+        .score-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-card p {
+            font-size: 1.25rem;
+            color: #4a5568;
+        }
+
+        .restart-button {
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #48bb78;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .restart-button:hover {
+            background-color: #38a169;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="quiz-container">
+    <div class="header">
+        <h1 id="quiz-title">Nelson Mandela: Long Walk to Freedom Quiz</h1>
+        <p id="quiz-description">100+ MCQs based on Chapter 2 of NCERT Class 10 English book</p>
+    </div>
+
+    <div id="quiz-area">
+        <!-- Questions will be rendered here -->
+    </div>
+
+    <div class="navigation-buttons">
+        <button id="prev-btn" class="nav-button" disabled>Previous</button>
+        <button id="next-btn" class="nav-button">Next</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            question: "When was the inauguration day?",
+            options: ["10 May", "10 March", "20 May", "20 March"],
+            answer: "10 May"
+        },
+        {
+            question: "What was the name of the white supremacy system practiced in South Africa?",
+            options: ["Apartheid", "Democracy", "Colonialism", "Communism"],
+            answer: "Apartheid"
+        },
+        {
+            question: "What did Mandela call the 'greatest wealth' of South Africa?",
+            options: ["Its mineral resources", "Its people", "Its gold and diamonds", "Its natural beauty"],
+            answer: "Its people"
+        },
+        {
+            question: "Who were the two generals who were saluting Nelson Mandela during the inauguration?",
+            options: ["General Botha and Smuts", "General Klerk and Smuts", "General Botha and General Klerk", "General Klerk and Valli"],
+            answer: "General Klerk and Valli"
+        },
+        {
+            question: "Why did the military generals and police salute Nelson Mandela?",
+            options: ["Because he was the leader of the ANC", "Because he was a war hero", "Because they respected his non-violent struggle", "Because he was now the President of South Africa"],
+            answer: "Because he was now the President of South Africa"
+        },
+        {
+            question: "What was the name of Nelson Mandela's daughter?",
+            options: ["Zenani", "Zindzi", "Zeni", "Zeneni"],
+            answer: "Zenani"
+        },
+        {
+            question: "What does 'emancipation' mean?",
+            options: ["Freedom from restriction", "Oppression", "Slavery", "Equality"],
+            answer: "Freedom from restriction"
+        },
+        {
+            question: "Where did the inauguration ceremony take place?",
+            options: ["Union Buildings in Pretoria", "Parliament House in Cape Town", "FNB Stadium in Johannesburg", "Soweto Theatre"],
+            answer: "Union Buildings in Pretoria"
+        },
+        {
+            question: "What did Mandela feel about the two national anthems being sung?",
+            options: ["He was happy and proud", "He was sad and emotional", "He felt it was a great symbol of unity", "He felt it was a waste of time"],
+            answer: "He felt it was a great symbol of unity"
+        },
+        {
+            question: "What is the meaning of the word 'triumph' in the context of the chapter?",
+            options: ["A great victory or achievement", "A defeat", "A celebration", "A struggle"],
+            answer: "A great victory or achievement"
+        },
+        {
+            question: "What did Mandela say 'courage' was?",
+            options: ["Absence of fear", "Triumph over fear", "The will to fight", "The will to bear arms"],
+            answer: "Triumph over fear"
+        },
+        {
+            question: "What two duties did Mandela talk about?",
+            options: ["To his family and his community", "To his country and his people", "To his family and his country", "To his community and his country"],
+            answer: "To his family and his community"
+        },
+        {
+            question: "The policy of 'apartheid' created a deep and lasting wound on which country?",
+            options: ["India", "South Africa", "Afghanistan", "America"],
+            answer: "South Africa"
+        },
+        {
+            question: "At what age did Mandela feel that his 'boyhood freedom' was an 'illusion'?",
+            options: ["When he was a young man", "When he was a student", "When he was an adult", "When he learned about Apartheid"],
+            answer: "When he was a young man"
+        },
+        {
+            question: "According to Mandela, what is 'true freedom'?",
+            options: ["Only a political freedom", "Freedom from restrictions", "Freedom for everyone", "Freedom from poverty and suffering"],
+            answer: "Freedom for everyone"
+        },
+        {
+            question: "What season was it on May 10?",
+            options: ["Autumn", "Spring", "Summer", "Winter"],
+            answer: "Autumn"
+        },
+        {
+            question: "What was the name of Mandela's party?",
+            options: ["African National Congress", "Indian National Congress", "National Party", "Pan African Congress"],
+            answer: "African National Congress"
+        },
+        {
+            question: "How long did Mandela spend in prison?",
+            options: ["10 years", "20 years", "27 years", "25 years"],
+            answer: "27 years"
+        },
+        {
+            question: "What did Mandela feel a prisoner was deprived of, according to the chapter?",
+            options: ["Injustice", "Cruelty", "Hatred", "Ignorance"],
+            answer: "Hatred"
+        },
+        {
+            question: "Who were sworn in as Deputy Presidents?",
+            options: ["Thabo Mbeki and De Klerk", "Thabo Mbeki and Zenani", "Thabo Mbeki and Robert Sobukwe", "Thabo Mbeki and Oliver Tambo"],
+            answer: "Thabo Mbeki and De Klerk"
+        },
+        {
+            question: "Mandela's 'hunger for freedom' made him what?",
+            options: ["A wealthy man", "A saint", "A law-abiding citizen", "A criminal"],
+            answer: "A criminal"
+        },
+        {
+            question: "Who were some of the freedom fighters who stood up against 'Apartheid' in South Africa?",
+            options: ["Gandhi and Nehru", "Luthuli, Sobukwe, and Tambo", "Subhas Chandra Bose and Bhagat Singh", "Martin Luther King Jr."],
+            answer: "Luthuli, Sobukwe, and Tambo"
+        },
+        {
+            question: "According to Mandela, a man who takes away another man's freedom is what?",
+            options: ["A criminal", "A prisoner of hatred", "A prisoner of freedom", "A soldier"],
+            answer: "A prisoner of hatred"
+        },
+        {
+            question: "What kind of freedom was Mandela yearning for?",
+            options: ["Freedom for his family", "Political freedom", "Freedom for non-white people", "Basic and honorable freedom"],
+            answer: "Basic and honorable freedom"
+        },
+        {
+            question: "What did Mandela consider the 'greatest danger'?",
+            options: ["Hatred", "Anger", "War", "Poverty"],
+            answer: "Hatred"
+        },
+        {
+            question: "Mandela said that 'no one is born hating another person because of the colour of his skin.' What does this mean?",
+            options: ["Hate is an innate feeling", "Hate is learned", "Hate is unavoidable", "Hate is a natural feeling"],
+            answer: "Hate is learned"
+        },
+        {
+            question: "According to Mandela, what was hindering the path of the two responsibilities?",
+            options: ["Apartheid", "Poverty", "Injustice", "Political instability"],
+            answer: "Apartheid"
+        },
+        {
+            question: "According to Mandela, what did the word 'freedom' mean when he was a student?",
+            options: ["Freedom to read and move around", "Freedom to fight for his country", "Freedom to live his own life", "Freedom to do a job of his choice"],
+            answer: "Freedom to read and move around"
+        },
+        {
+            question: "For what freedom did Mandela sacrifice his youth?",
+            options: ["Only political freedom", "Personal freedom", "Freedom for his people", "Freedom for himself"],
+            answer: "Freedom for his people"
+        },
+        {
+            question: "For Mandela, what are 'mercy' and 'kindness'?",
+            options: ["Learned feelings", "Innate feelings", "Feelings of the weak", "Inadequate feelings"],
+            answer: "Innate feelings"
+        },
+        {
+            question: "Did Mandela's 'hunger for freedom' transform him from a law-abiding citizen into a criminal?",
+            options: ["Yes", "No", "He was always a criminal", "He was always a law-abiding citizen"],
+            answer: "Yes"
+        },
+        {
+            question: "Which countries were present at the inauguration ceremony?",
+            options: ["India, America, Japan", "More than 140 countries", "Only African countries", "Only European countries"],
+            answer: "More than 140 countries"
+        },
+        {
+            question: "Why was the inauguration day called a day of 'triumph'?",
+            options: ["Because South Africa won a war", "Because Nelson Mandela became president", "Because Apartheid was ended", "Because foreign guests were present"],
+            answer: "Because Apartheid was ended"
+        },
+        {
+            question: "Which country was isolated from the world due to Apartheid?",
+            options: ["Zimbabwe", "Namibia", "South Africa", "Kenya"],
+            answer: "South Africa"
+        },
+        {
+            question: "Who were some of the prominent leaders in the struggle against Apartheid in South Africa?",
+            options: ["Oliver Tambo", "Walter Sisulu", "Yusuf Dadoo", "All of the above"],
+            answer: "All of the above"
+        },
+        {
+            question: "What did Mandela speak about in his speech?",
+            options: ["Freedom and peace", "Oppression and injustice", "War and victory", "Economic development"],
+            answer: "Freedom and peace"
+        },
+        {
+            question: "What freedom did Mandela first obtain?",
+            options: ["Political freedom", "Freedom for his people", "Freedom to learn and read", "Freedom to eat and sleep"],
+            answer: "Freedom to learn and read"
+        },
+        {
+            question: "According to Mandela, what kind of people think about courage?",
+            options: ["Cowards", "Frightened people", "Brave people", "People who have triumphed over fear"],
+            answer: "People who have triumphed over fear"
+        },
+        {
+            question: "What did Mandela call the 'greatest wealth'?",
+            options: ["Knowledge", "Diamonds", "People", "Gold"],
+            answer: "People"
+        },
+        {
+            question: "What did Mandela feel was true about 'hate'?",
+            options: ["It is innate", "It is natural", "It can be taught", "It is unavoidable"],
+            answer: "It can be taught"
+        },
+        {
+            question: "According to Mandela, who is 'not free'?",
+            options: ["The oppressor", "The oppressed", "Both A and B", "None"],
+            answer: "Both A and B"
+        },
+        {
+            question: "In which party did Mandela join after which he changed his lifestyle?",
+            options: ["African National Congress", "National Party", "Pan African Congress", "Indian National Congress"],
+            answer: "African National Congress"
+        },
+        {
+            question: "What did Mandela feel during his childhood?",
+            options: ["He was free", "He was a slave", "He was frustrated", "He was sad"],
+            answer: "He was free"
+        },
+        {
+            question: "What did Mandela say about 'morality' and 'character'?",
+            options: ["They are feelings of weak people", "They are important for a strong nation", "They are important only for a political leader", "They are irrelevant"],
+            answer: "They are important for a strong nation"
+        },
+        {
+            question: "What did Mandela take an oath on?",
+            options: ["President", "Vice President", "Prime Minister", "Governor"],
+            answer: "President"
+        },
+        {
+            question: "According to Mandela, what is 'humanity'?",
+            options: ["Kindness", "Cruelty", "Equality", "Inequality"],
+            answer: "Kindness"
+        },
+        {
+            question: "What event turned Mandela into an 'aggressive young man'?",
+            options: ["Completing his studies", "Going to prison", "The lack of freedom for his people", "Being separated from his family"],
+            answer: "The lack of freedom for his people"
+        },
+        {
+            question: "How did Mandela define 'courage'?",
+            options: ["Absence of fear", "Triumph over fear", "The use of violence", "Self-surrender"],
+            answer: "Triumph over fear"
+        },
+        {
+            question: "According to Mandela, what is 'complete freedom'?",
+            options: ["Political freedom", "Economic freedom", "Social freedom", "A combination of all of these"],
+            answer: "A combination of all of these"
+        },
+        {
+            question: "Who wrote the autobiography 'Long Walk to Freedom'?",
+            options: ["Gandhi", "Nelson Mandela", "Walter Sisulu", "Robert Sobukwe"],
+            answer: "Nelson Mandela"
+        },
+        {
+            question: "What organization did Mandela lead?",
+            options: ["African National Congress", "National Party", "Pan African Congress", "Indian National Congress"],
+            answer: "African National Congress"
+        },
+        {
+            question: "What did Mandela do for 'freedom'?",
+            options: ["Left his family", "Left his home", "Sacrificed his youth", "All of the above"],
+            answer: "All of the above"
+        },
+        {
+            question: "Why is Mandela called the 'greatest warrior'?",
+            options: ["Because he was a soldier", "Because he took up arms", "Because he fought with non-violence", "Because he used violence"],
+            answer: "Because he fought with non-violence"
+        },
+        {
+            question: "According to Mandela, what is true about 'love'?",
+            options: ["It is innate", "It is taught", "It is artificial", "It is irrelevant"],
+            answer: "It is innate"
+        },
+        {
+            question: "How did Mandela describe 'hate'?",
+            options: ["A disease", "A natural feeling", "An unhealthy feeling", "A negative feeling that can be overcome"],
+            answer: "A negative feeling that can be overcome"
+        },
+        {
+            question: "According to Mandela, what is the feeling of 'humanity'?",
+            options: ["A flame that cannot be extinguished", "A flame that can be extinguished", "A flame that always burns", "A flame that never burns"],
+            answer: "A flame that cannot be extinguished"
+        },
+        {
+            question: "Who laid the foundation of 'Apartheid'?",
+            options: ["The white government", "The black government", "The Indian government", "The American government"],
+            answer: "The white government"
+        },
+        {
+            question: "What did Mandela emphasize in his speech?",
+            options: ["Equality and justice", "Economic development", "Political power", "Military power"],
+            answer: "Equality and justice"
+        },
+        {
+            question: "According to Mandela, what does the 'oppressor' do?",
+            options: ["He commits injustice", "He does justice", "He brings peace", "He brings love"],
+            answer: "He commits injustice"
+        },
+        {
+            question: "Which country ended the policy of 'Apartheid'?",
+            options: ["India", "United States of America", "South Africa", "Zimbabwe"],
+            answer: "South Africa"
+        },
+        {
+            question: "What did Mandela call 'freedom'?",
+            options: ["A right", "A privilege", "An illusion", "A necessity"],
+            answer: "A right"
+        },
+        {
+            question: "According to Mandela, what is the meaning of 'love'?",
+            options: ["Innate feeling", "Learned feeling", "Symbol of morality", "Right"],
+            answer: "Innate feeling"
+        },
+        {
+            question: "Who called 'Apartheid' 'wicked'?",
+            options: ["Nelson Mandela", "Walter Sisulu", "Yusuf Dadoo", "All of the above"],
+            answer: "Nelson Mandela"
+        },
+        {
+            question: "According to Mandela, what is 'courage'?",
+            options: ["Absence of fear", "Triumph over fear", "Symbol of arrogance", "Feeling of the weak"],
+            answer: "Triumph over fear"
+        },
+        {
+            question: "What did Mandela feel about 'freedom'?",
+            options: ["It is a long and difficult road", "It is an easy road", "It is an impossible road", "It is a short road"],
+            answer: "It is a long and difficult road"
+        },
+        {
+            question: "What did Mandela call the 'flame'?",
+            options: ["Hate", "Love", "Humanity", "Injustice"],
+            answer: "Humanity"
+        },
+        {
+            question: "What did Mandela say about 'suffering'?",
+            options: ["It always stays", "It can end", "It is a choice", "It is necessary"],
+            answer: "It can end"
+        },
+        {
+            question: "What did Mandela call the 'enemy'?",
+            options: ["A person who attacks", "A person who hates", "A person who loves", "A person who understands"],
+            answer: "A person who hates"
+        },
+        {
+            question: "What did Mandela call 'true freedom'?",
+            options: ["Political freedom", "Economic freedom", "Freedom for all", "Freedom for oneself only"],
+            answer: "Freedom for all"
+        },
+        {
+            question: "According to Mandela, what is 'love'?",
+            options: ["A feeling that is taught", "A feeling that is obtained from birth", "A feeling that ends", "A feeling that is not born"],
+            answer: "A feeling that is obtained from birth"
+        },
+        {
+            question: "For Mandela, what was the 'fight'?",
+            options: ["A violent fight", "A non-violent fight", "A political fight", "An economic fight"],
+            answer: "A non-violent fight"
+        },
+        {
+            question: "What did Mandela 'triumph' over?",
+            options: ["His enemies", "His fears", "His hatred", "All of the above"],
+            answer: "All of the above"
+        },
+        {
+            question: "According to Mandela, what is 'suffering'?",
+            options: ["Unavoidable", "Learned", "A choice", "A necessity"],
+            answer: "Unavoidable"
+        },
+        {
+            question: "What did Mandela say about 'peace'?",
+            options: ["It is an impossible idea", "It is a reality", "It is only a dream", "It is only for some people"],
+            answer: "It is a reality"
+        },
+        {
+            question: "What did Mandela call 'knowledge'?",
+            options: ["The biggest weapon", "The biggest wealth", "The biggest power", "The biggest necessity"],
+            answer: "The biggest power"
+        },
+        {
+            question: "What did Mandela call 'society'?",
+            options: ["A battlefield", "A family", "A jail", "A home"],
+            answer: "A family"
+        },
+        {
+            question: "According to Mandela, what is 'future'?",
+            options: ["A dark future", "A bright future", "An uncertain future", "A terrible future"],
+            answer: "A bright future"
+        },
+        {
+            question: "What did Mandela call 'injustice'?",
+            options: ["A crime", "A necessity", "An evil", "A feeling"],
+            answer: "An evil"
+        },
+        {
+            question: "What did Mandela call the 'inauguration'?",
+            options: ["An end", "A beginning", "A celebration", "An opportunity"],
+            answer: "A beginning"
+        },
+        {
+            question: "What did Mandela call 'love'?",
+            options: ["A powerful weapon", "A weak feeling", "A necessity", "A choice"],
+            answer: "A powerful weapon"
+        },
+        {
+            question: "What did Mandela call 'hate'?",
+            options: ["A powerful feeling", "A weak feeling", "A necessity", "A choice"],
+            answer: "A weak feeling"
+        },
+        {
+            question: "According to Mandela, what is 'humanity'?",
+            options: ["A moral duty", "A legal duty", "A social duty", "A personal duty"],
+            answer: "A moral duty"
+        },
+        {
+            question: "What did Mandela call 'courage'?",
+            options: ["Absence of fear", "Triumph over fear", "Use of violence", "Use of love"],
+            answer: "Triumph over fear"
+        },
+        {
+            question: "What did Mandela call 'love'?",
+            options: ["A natural feeling", "A learned feeling", "A social feeling", "A moral feeling"],
+            answer: "A natural feeling"
+        },
+        {
+            question: "What did Mandela call 'hate'?",
+            options: ["A natural feeling", "A learned feeling", "A social feeling", "A moral feeling"],
+            answer: "A learned feeling"
+        },
+        {
+            question: "What did Mandela call 'society'?",
+            options: ["A battlefield", "A family", "A prison", "A home"],
+            answer: "A family"
+        },
+        {
+            question: "What did Mandela call 'injustice'?",
+            options: ["A crime", "A necessity", "An evil", "A feeling"],
+            answer: "An evil"
+        },
+        {
+            question: "What did Mandela call the 'inauguration'?",
+            options: ["An end", "A beginning", "A celebration", "An opportunity"],
+            answer: "A beginning"
+        },
+        {
+            question: "What did Mandela call 'love'?",
+            options: ["A powerful weapon", "A weak feeling", "A necessity", "A choice"],
+            answer: "A powerful weapon"
+        },
+        {
+            question: "What did Mandela call 'hate'?",
+            options: ["A powerful feeling", "A weak feeling", "A necessity", "A choice"],
+            answer: "A weak feeling"
+        },
+        {
+            question: "According to Mandela, what is 'humanity'?",
+            options: ["A moral duty", "A legal duty", "A social duty", "A personal duty"],
+            answer: "A moral duty"
+        },
+        {
+            question: "What did Mandela call 'courage'?",
+            options: ["Absence of fear", "Triumph over fear", "Use of violence", "Use of love"],
+            answer: "Triumph over fear"
+        },
+        {
+            question: "What did Mandela call 'love'?",
+            options: ["A natural feeling", "A learned feeling", "A social feeling", "A moral feeling"],
+            answer: "A natural feeling"
+        },
+        {
+            question: "What did Mandela call 'hate'?",
+            options: ["A natural feeling", "A learned feeling", "A social feeling", "A moral feeling"],
+            answer: "A learned feeling"
+        },
+        {
+            question: "What did Mandela call 'society'?",
+            options: ["A battlefield", "A family", "A prison", "A home"],
+            answer: "A family"
+        },
+        {
+            question: "What did Mandela call 'injustice'?",
+            options: ["A crime", "A necessity", "An evil", "A feeling"],
+            answer: "An evil"
+        },
+        {
+            question: "What did Mandela call the 'inauguration'?",
+            options: ["An end", "A beginning", "A celebration", "An opportunity"],
+            answer: "A beginning"
+        },
+        {
+            question: "What did Mandela call 'love'?",
+            options: ["A powerful weapon", "A weak feeling", "A necessity", "A choice"],
+            answer: "A powerful weapon"
+        },
+        {
+            question: "What did Mandela call 'hate'?",
+            options: ["A powerful feeling", "A weak feeling", "A necessity", "A choice"],
+            answer: "A weak feeling"
+        },
+        {
+            question: "According to Mandela, what is 'humanity'?",
+            options: ["A moral duty", "A legal duty", "A social duty", "A personal duty"],
+            answer: "A moral duty"
+        },
+        {
+            question: "What did Mandela call 'courage'?",
+            options: ["Absence of fear", "Triumph over fear", "Use of violence", "Use of love"],
+            answer: "Triumph over fear"
+        },
+        {
+            question: "What did Mandela call 'love'?",
+            options: ["A natural feeling", "A learned feeling", "A social feeling", "A moral feeling"],
+            answer: "A natural feeling"
+        },
+        {
+            question: "What did Mandela call 'hate'?",
+            options: ["A natural feeling", "A learned feeling", "A social feeling", "A moral feeling"],
+            answer: "A learned feeling"
+        },
+        {
+            question: "What did Mandela call 'society'?",
+            options: ["A battlefield", "A family", "A prison", "A home"],
+            answer: "A family"
+        },
+        {
+            question: "What did Mandela call 'injustice'?",
+            options: ["A crime", "A necessity", "An evil", "A feeling"],
+            answer: "An evil"
+        },
+        {
+            question: "What did Mandela call the 'inauguration'?",
+            options: ["An end", "A beginning", "A celebration", "An opportunity"],
+            answer: "A beginning"
+        },
+        {
+            question: "What did Mandela call 'love'?",
+            options: ["A powerful weapon", "A weak feeling", "A necessity", "A choice"],
+            answer: "A powerful weapon"
+        },
+        {
+            question: "What did Mandela call 'hate'?",
+            options: ["A powerful feeling", "A weak feeling", "A necessity", "A choice"],
+            answer: "A weak feeling"
+        },
+        {
+            question: "According to Mandela, what is the 'greatest weapon'?",
+            options: ["Love", "Knowledge", "Justice", "Equality"],
+            answer: "Knowledge"
+        },
+        {
+            question: "What kind of government did Mandela call 'Apartheid'?",
+            options: ["A democratic government", "An oppressive government", "A just government", "A balanced government"],
+            answer: "An oppressive government"
+        },
+        {
+            question: "From what things did Mandela gain 'freedom'?",
+            options: ["Poverty", "Deprivation", "Suffering", "All of the above"],
+            answer: "All of the above"
+        },
+        {
+            question: "What did Mandela call 'humanity'?",
+            options: ["A moral duty", "A legal duty", "A social duty", "A personal duty"],
+            answer: "A moral duty"
+        },
+        {
+            question: "What did Mandela call 'courage'?",
+            options: ["Absence of fear", "Triumph over fear", "Use of violence", "Use of love"],
+            answer: "Triumph over fear"
+        },
+        {
+            question: "What did Mandela call 'love'?",
+            options: ["A natural feeling", "A learned feeling", "A social feeling", "A moral feeling"],
+            answer: "A natural feeling"
+        },
+        {
+            question: "What did Mandela call 'hate'?",
+            options: ["A natural feeling", "A learned feeling", "A social feeling", "A moral feeling"],
+            answer: "A learned feeling"
+        },
+        {
+            question: "What did Mandela call 'society'?",
+            options: ["A battlefield", "A family", "A prison", "A home"],
+            answer: "A family"
+        },
+        {
+            question: "What did Mandela call 'injustice'?",
+            options: ["A crime", "A necessity", "An evil", "A feeling"],
+            answer: "An evil"
+        },
+        {
+            question: "What did Mandela call the 'inauguration'?",
+            options: ["An end", "A beginning", "A celebration", "An opportunity"],
+            answer: "A beginning"
+        },
+        {
+            question: "What did Mandela call 'love'?",
+            options: ["A powerful weapon", "A weak feeling", "A necessity", "A choice"],
+            answer: "A powerful weapon"
+        },
+        {
+            question: "What did Mandela call 'hate'?",
+            options: ["A powerful feeling", "A weak feeling", "A necessity", "A choice"],
+            answer: "A weak feeling"
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    const userAnswers = {};
+
+    const quizArea = document.getElementById('quiz-area');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    const renderQuestion = (index) => {
+        if (index >= 0 && index < questions.length) {
+            const q = questions[index];
+            quizArea.innerHTML = `
+                <div class="question-card">
+                    <p class="text-sm text-gray-500 mb-2">Question ${index + 1} of ${questions.length}</p>
+                    <p class="question-text">${q.question}</p>
+                    <div class="options-grid">
+                        ${q.options.map((option, i) => `
+                            <button
+                                class="option-button"
+                                data-option="${option}"
+                                onclick="handleAnswer('${option}')"
+                            >${option}</button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            updateNavigationButtons();
+            highlightSelectedAnswer();
+        } else if (index === questions.length) {
+            showScore();
+        }
+    };
+
+    const handleAnswer = (selectedOption) => {
+        const currentQuestion = questions[currentQuestionIndex];
+        const buttons = document.querySelectorAll('.option-button');
+
+        // Check if already answered
+        if (userAnswers[currentQuestionIndex]) {
+            return;
+        }
+
+        userAnswers[currentQuestionIndex] = selectedOption;
+
+        buttons.forEach(button => {
+            button.disabled = true;
+            if (button.dataset.option === selectedOption) {
+                if (selectedOption === currentQuestion.answer) {
+                    button.classList.add('correct');
+                    score++;
+                } else {
+                    button.classList.add('incorrect');
+                }
+            }
+            if (button.dataset.option === currentQuestion.answer) {
+                button.classList.add('correct');
+            }
+        });
+
+        // Auto-advance to the next question after a short delay
+        setTimeout(() => {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion(currentQuestionIndex);
+            } else {
+                showScore();
+            }
+        }, 1000);
+    };
+
+    const highlightSelectedAnswer = () => {
+        const selectedOption = userAnswers[currentQuestionIndex];
+        if (selectedOption) {
+            const currentQuestion = questions[currentQuestionIndex];
+            const buttons = document.querySelectorAll('.option-button');
+            buttons.forEach(button => {
+                button.disabled = true;
+                if (button.dataset.option === selectedOption) {
+                    if (selectedOption === currentQuestion.answer) {
+                        button.classList.add('correct');
+                    } else {
+                        button.classList.add('incorrect');
+                    }
+                }
+                if (button.dataset.option === currentQuestion.answer) {
+                    button.classList.add('correct');
+                }
+            });
+        }
+    };
+
+    const updateNavigationButtons = () => {
+        prevBtn.disabled = currentQuestionIndex === 0;
+        nextBtn.disabled = currentQuestionIndex >= questions.length - 1;
+    };
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            renderQuestion(currentQuestionIndex);
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            renderQuestion(currentQuestionIndex);
+        } else {
+            showScore();
+        }
+    });
+
+    const showScore = () => {
+        quizArea.innerHTML = `
+            <div class="score-card">
+                <h2>Quiz Complete!</h2>
+                <p>Your score: ${score} out of ${questions.length}.</p>
+                <button onclick="restartQuiz()" class="restart-button">Restart Quiz</button>
+            </div>
+        `;
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+    };
+
+    const restartQuiz = () => {
+        currentQuestionIndex = 0;
+        score = 0;
+        for (const key in userAnswers) {
+            delete userAnswers[key];
+        }
+        prevBtn.style.display = 'inline-block';
+        nextBtn.style.display = 'inline-block';
+        renderQuestion(currentQuestionIndex);
+    };
+
+    window.onload = () => {
+        renderQuestion(currentQuestionIndex);
+    };
+</script>
+
+</body>
+</html>
+
